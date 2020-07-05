@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+        app1:
+                build: ./app1
+                image: pstyp94/app1
+                ports:
+                        - target: 5000
+                          published: 5000
+                          protocol: tcp
+        
+
+        app2:
+                build: ./app2
+                image: pstyp94/app2
+                ports:
+                        - target: 5001
+                          published: 5001
+                          protocol: tcp
+
+        nginx:
+               image: nginx:alpine
+               ports:
+                       - target: 80
+                         published: 80
+               depends_on:
+                       - app1
+                       - app2
+
+               volumes:
+                       - type: bind 
+                         source: ./nginx/nginx.conf
+                         target: /etc/nginx/nginx.conf 
+
+       
+
